@@ -1,0 +1,27 @@
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/test/widget_test.dart|28|22|3|Prefer double quotes where they won't require escape sequences.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/test/widget_test.dart|9|8|40|Prefer double quotes where they won't require escape sequences.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/test/widget_test.dart|11|8|38|Prefer double quotes where they won't require escape sequences.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/test/widget_test.dart|20|22|3|Prefer double quotes where they won't require escape sequences.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/test/widget_test.dart|27|22|3|Prefer double quotes where they won't require escape sequences.
+/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart is a part and cannot be analyzed.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/test/widget_test.dart|14|15|31|Prefer double quotes where they won't require escape sequences.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/test/widget_test.dart|8|8|31|Prefer double quotes where they won't require escape sequences.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/test/widget_test.dart|19|22|3|Prefer double quotes where they won't require escape sequences.
+ERROR|LINT|public_member_api_docs|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|26|16|5|Document all public members.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|4|8|31|Prefer double quotes where they won't require escape sequences.
+ERROR|LINT|public_member_api_docs|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|25|3|52|Document all public members.
+INFO|LINT|prefer_const_constructors|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|81|13|80|Prefer const with constant constructors.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|1|8|9|Prefer double quotes where they won't require escape sequences.
+WARNING|LINT|directives_ordering|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|6|1|27|Place 'dart:' imports before other imports.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|5|8|30|Prefer double quotes where they won't require escape sequences.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|19|31|24|Prefer double quotes where they won't require escape sequences.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|94|18|11|Prefer double quotes where they won't require escape sequences.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|6|8|11|Prefer double quotes where they won't require escape sequences.
+ERROR|LINT|public_member_api_docs|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|49|5|12|Document all public members.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|85|15|11|Prefer double quotes where they won't require escape sequences.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|82|15|45|Prefer double quotes where they won't require escape sequences.
+ERROR|LINT|public_member_api_docs|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|10|7|5|Document all public members.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|3|8|33|Prefer double quotes where they won't require escape sequences.
+INFO|LINT|prefer_double_quotes|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|15|14|14|Prefer double quotes where they won't require escape sequences.
+ERROR|LINT|prefer_const_constructors_in_immutables|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|25|3|10|Prefer declare const constructors on `@immutable` classes.
+ERROR|LINT|public_member_api_docs|/Users/darelbitsy/IdeaProjects/dbstyleguidechecker/lib/main.dart|24|7|10|Document all public members.
