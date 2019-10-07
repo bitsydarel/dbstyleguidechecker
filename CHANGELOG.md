@@ -1,3 +1,4 @@
 ## 1.0.0
 
-- Initial version, created by Stagehand
+- Initial version, with check code style guideline feature.
+- Push code style violation as pull request review comments.

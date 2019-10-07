@@ -46,7 +46,7 @@ abstract class DBStyleGuideChecker {
   final DBStyleGuideCheckReporter _reporter;
 
   /// Run the checker.
-  Future check() async {
+  Future<void> check() async {
     final rawViolations = await foundStyleCheckViolations();
 
     final parsedViolations = await _parser.parse(
@@ -54,7 +54,7 @@ abstract class DBStyleGuideChecker {
       projectDir.path,
     );
 
-    _reporter.report(parsedViolations);
+    await _reporter.report(parsedViolations);
   }
 
   /// Found [styleGuide] violations from the [projectDir].

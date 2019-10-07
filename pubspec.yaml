@@ -1,7 +1,7 @@
 name: dbstyleguidechecker
-description: A tool that help verify a project agains code style guide.
+description: A tool that help you verify a project agains code style guide and automatize pull request review.
 version: 1.0.0
-# homepage: https://www.example.com
+homepage: https://github.com/bitsydarel/dbstyleguidechecker
 author: darelbitsy <bitsydarel@gmail.com>
 
 environment:
@@ -9,6 +9,10 @@ environment:
 
 dependencies:
   path: ^1.6.4
+  args: ^1.5.2
+  meta: ^1.1.7
+  http: ^0.12.0+2
+  io: ^0.3.3
 
 dev_dependencies:
   flutter_code_style: ^1.6.2
