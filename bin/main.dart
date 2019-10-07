@@ -3,7 +3,7 @@ import "dart:convert";
 import "dart:io";
 import "package:io/ansi.dart";
 
-import "package:dbstyleguidechecker/dbstyleguidelinter.dart";
+import "package:dbstyleguidechecker/dbstyleguidechecker.dart";
 import "package:args/args.dart";
 
 const String styleGuide = "style-guide";

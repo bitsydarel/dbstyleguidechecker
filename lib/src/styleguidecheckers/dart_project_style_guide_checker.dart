@@ -2,7 +2,7 @@ import "dart:convert";
 import "dart:io";
 import "package:meta/meta.dart" show protected;
 
-import "package:dbstyleguidechecker/dbstyleguidelinter.dart";
+import "package:dbstyleguidechecker/dbstyleguidechecker.dart";
 import "package:dbstyleguidechecker/src/expections.dart";
 
 /// Dart project style guide linter.

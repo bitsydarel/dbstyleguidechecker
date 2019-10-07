@@ -1,6 +1,6 @@
 import "dart:convert" show LineSplitter;
 
-import "package:dbstyleguidechecker/dbstyleguidelinter.dart";
+import "package:dbstyleguidechecker/dbstyleguidechecker.dart";
 import "package:dbstyleguidechecker/src/style_guide_violation.dart";
 import "package:dbstyleguidechecker/src/utils/file_utils.dart";
 import "package:meta/meta.dart" show visibleForTesting;

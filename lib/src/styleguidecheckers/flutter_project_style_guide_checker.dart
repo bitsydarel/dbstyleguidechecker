@@ -1,7 +1,7 @@
 import "dart:convert";
 import "dart:io";
 
-import "package:dbstyleguidechecker/dbstyleguidelinter.dart";
+import "package:dbstyleguidechecker/dbstyleguidechecker.dart";
 import "package:dbstyleguidechecker/src/expections.dart";
 
 /// Flutter project style guide linter.

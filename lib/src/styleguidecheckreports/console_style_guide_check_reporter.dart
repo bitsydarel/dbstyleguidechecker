@@ -1,4 +1,4 @@
-import "package:dbstyleguidechecker/dbstyleguidelinter.dart";
+import "package:dbstyleguidechecker/dbstyleguidechecker.dart";
 import "package:dbstyleguidechecker/src/style_guide_violation.dart";
 import "package:io/ansi.dart";
 
