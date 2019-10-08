@@ -1,6 +1,6 @@
 name: dbstyleguidechecker
 description: A tool that help you verify a project agains code style guide and automatize pull request review.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/bitsydarel/dbstyleguidechecker
 author: darelbitsy <bitsydarel@gmail.com>
 

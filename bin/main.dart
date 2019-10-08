@@ -58,7 +58,7 @@ void _printHelpMessage([final String message]) {
       LineSplitter.split(_argumentParser.usage).map((l) => "$l").join("\n");
 
   print(
-    "Usage: dbstyleguidelinter --style-guide "
+    "Usage: dbstyleguidechecker --style-guide "
     "<path to analysis_options.yaml> <local project directory>"
     "\nOptions: $options",
   );

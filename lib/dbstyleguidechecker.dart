@@ -1,4 +1,4 @@
-library dbstyleguidelinter;
+library dbstyleguidechecker;
 
 import "dart:io";
 import "package:meta/meta.dart" show protected;
