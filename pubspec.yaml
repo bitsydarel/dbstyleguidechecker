@@ -15,7 +15,7 @@ dependencies:
   io: ^0.3.3
 
 dev_dependencies:
-  flutter_code_style: ^1.6.2
+  flutter_code_style: ^1.6.3
   test: ^1.8.0
 
 executables:
