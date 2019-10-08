@@ -4,7 +4,7 @@ It's also help you automate your code style guideline check on github pull reque
 
 [license](https://github.com/bitsydarel/dbstyleguidechecker/blob/master/LICENSE).
 
-Usage: dbstyleguidechecker --style-guide <path to analysis_options.yaml> <local project directory>
+Usage: dbstyleguidechecker --style-guide [path to analysis_options.yaml] [local project directory]
 
 Options: -s, --style-guide      specify the code style guide to use (defaults to "analysis_options.yaml")
 
