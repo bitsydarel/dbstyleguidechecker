@@ -169,7 +169,7 @@ void main(List<String> arguments) async {
           styleGuideFile, projectDir, parser, reporter);
 
   runZoned<void>(checker.check, onError: (Object error, StackTrace stackTrace) {
-    _printHelpMessage("${error.toString()} \n ${stackTrace.toString()}");
+    _printHelpMessage(error.toString());
     if (error is UnrecoverableException) {
       exitCode = error.exitCode;
     } else {

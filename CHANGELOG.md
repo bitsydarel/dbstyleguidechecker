@@ -11,3 +11,6 @@
 
 ## 1.0.3
 - Added support for running the program using just dbstyleguidechecker.
+
+## 1.0.4
+- Removed stack trace in error message
