@@ -8,3 +8,6 @@
 
 ## 1.0.2
 - Changed executable package name to match dbstyleguidechecker.
+
+## 1.0.3
+- Added support for running the program using just dbstyleguidechecker.
