@@ -5,3 +5,6 @@
 
 ## 1.0.1
 - Updated package name to match dbstyleguidechecker.
+
+## 1.0.2
+- Changed executable package name to match dbstyleguidechecker.
