@@ -4,9 +4,9 @@ A code style violations script for dart, flutter and other.
 
 ## Overview
 
-A command-line tool that help you verify that code in a project follow a specific code style guideline.
+A command-line tool that help you verify a code style against a project.
 
-It's also help you automate your code style check on github pull requests.
+It's help you automate your code style check on a vcs pull requests, example: github.
 
 [license](https://github.com/bitsydarel/dbstyleguidechecker/blob/master/LICENSE).
 
