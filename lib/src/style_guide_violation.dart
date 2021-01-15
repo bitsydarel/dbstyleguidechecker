@@ -1,39 +1,8 @@
-import "package:meta/meta.dart" show visibleForTesting;
+import 'package:meta/meta.dart' show visibleForTesting, immutable, required;
 
 /// Dart lint violation class representation.
-class StyleGuideViolation {
-  /// Create a new [StyleGuideViolation].
-  const StyleGuideViolation(
-    this.severity,
-    this.type,
-    this.file,
-    this.line,
-    this.lineColumn,
-    this.rule,
-    this.ruleDescription,
-  )   : assert(severity != null, "severity can't be null"),
-        assert(type != null, "type can't be null"),
-        assert(file != null, "file can't be null"),
-        assert(line != null, "line can't be null"),
-        assert(lineColumn != null, "lineColumn can't be null"),
-        assert(rule != null, "rule can't be null"),
-        assert(ruleDescription != null, "ruleDescription can't be null");
-
-  /// Create a new [StyleGuideViolation] for an invalid lint violation.
-  factory StyleGuideViolation.invalid(
-    final String filePath,
-  ) {
-    return StyleGuideViolation(
-      ViolationSeverity.withId("INVALID"),
-      "",
-      filePath,
-      0,
-      0,
-      "",
-      "is a part and cannot be analyzed.",
-    );
-  }
-
+@immutable
+class CodeStyleViolation {
   /// Lint violation severity
   final ViolationSeverity severity;
 
@@ -55,10 +24,42 @@ class StyleGuideViolation {
   /// the file's line column violating the lint rule.
   final int lineColumn;
 
+  /// Create a new [CodeStyleViolation].
+  const CodeStyleViolation({
+    @required this.severity,
+    @required this.type,
+    @required this.file,
+    @required this.line,
+    @required this.lineColumn,
+    @required this.rule,
+    @required this.ruleDescription,
+  })  : assert(severity != null, "severity can't be null"),
+        assert(type != null, "type can't be null"),
+        assert(file != null, "file can't be null"),
+        assert(line != null, "line can't be null"),
+        assert(lineColumn != null, "lineColumn can't be null"),
+        assert(rule != null, "rule can't be null"),
+        assert(ruleDescription != null, "ruleDescription can't be null");
+
+  /// Create a new [CodeStyleViolation] for an invalid lint violation.
+  factory CodeStyleViolation.invalid(
+    final String filePath,
+  ) {
+    return CodeStyleViolation(
+      severity : ViolationSeverity.withId('INVALID'),
+      type: '',
+      file: filePath,
+      line: 0,
+      lineColumn: 0,
+      rule: '',
+      ruleDescription: 'is a part and cannot be analyzed.',
+    );
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StyleGuideViolation &&
+      other is CodeStyleViolation &&
           runtimeType == other.runtimeType &&
           severity == other.severity &&
           type == other.type &&
@@ -80,19 +81,30 @@ class StyleGuideViolation {
 
   @override
   String toString() {
-    return "StyleGuideViolation{severity: $severity, type: $type, rule: $rule,"
-        " ruleDescription: $ruleDescription, file: $file,"
-        " line: $line, lineColumn: $lineColumn}";
+    return 'StyleGuideViolation{severity: $severity, type: $type, rule: $rule,'
+        ' ruleDescription: $ruleDescription, file: $file, '
+        'line: $line, lineColumn: $lineColumn}';
   }
 }
 
-const ViolationSeverity _info = ViolationSeverity.private(0, "INFO");
-const ViolationSeverity _warning = ViolationSeverity.private(1, "WARNING");
-const ViolationSeverity _error = ViolationSeverity.private(2, "ERROR");
-const ViolationSeverity _invalid = ViolationSeverity.private(3, "INVALID");
-
-/// Dart lint violation severity.
+/// Lint violation severity.
+@immutable
 class ViolationSeverity {
+  /// Violation severity of level info, meaning it's just a suggestions.
+  static const ViolationSeverity info = ViolationSeverity.private(0, 'INFO');
+
+  /// Violation severity of level warning, meaning it's might be an issue
+  /// Should be resolved or explicitly ignored.
+  static const ViolationSeverity warning =
+      ViolationSeverity.private(1, 'WARNING');
+
+  /// Violation severity of level error, meaning it's should be resolved asap.
+  static const ViolationSeverity error = ViolationSeverity.private(2, 'ERROR');
+
+  /// Violation severity of level invalid, meaning we don't know the severity.
+  static const ViolationSeverity invalid =
+      ViolationSeverity.private(3, 'INVALID');
+
   /// Create [ViolationSeverity] with [level] and [id].
   @visibleForTesting
   const ViolationSeverity.private(this.level, this.id)
@@ -103,14 +115,16 @@ class ViolationSeverity {
   ///
   /// Notes: the id need to be one of the items in [supportedSeverities].
   factory ViolationSeverity.withId(final String id) {
-    final lintSeverity = supportedSeverities
-        .firstWhere((element) => element.id == id, orElse: () => null);
+    final ViolationSeverity lintSeverity = supportedSeverities.firstWhere(
+      (ViolationSeverity element) => element.id == id,
+      orElse: () => null,
+    );
 
     if (lintSeverity == null) {
       throw ArgumentError.value(
         id,
-        "id",
-        "only: ${supportedSeverities.map((item) => item.id)}",
+        'id',
+        'only: ${supportedSeverities.map((ViolationSeverity item) => item.id)}',
       );
     } else {
       return lintSeverity;
@@ -135,13 +149,9 @@ class ViolationSeverity {
   int get hashCode => level.hashCode ^ id.hashCode;
 
   @override
-  String toString() => "ViolationSeverity{level: $level, id: $id}";
+  String toString() => 'ViolationSeverity{level: $level, id: $id}';
 
   /// Contains the list of supported lint rules severities.
-  static final List<ViolationSeverity> supportedSeverities = [
-    _info,
-    _warning,
-    _error,
-    _invalid
-  ];
+  static final List<ViolationSeverity> supportedSeverities =
+      <ViolationSeverity>[info, warning, error, invalid];
 }

@@ -33,5 +33,5 @@ class UnrecoverableException implements Exception {
   final int exitCode;
 
   @override
-  String toString() => "$reason";
+  String toString() => 'Exit code: $exitCode, Reason: $reason';
 }

@@ -1,7 +1,10 @@
+import 'package:meta/meta.dart';
+
 /// Github file diff.
+@immutable
 class GithubFileDiff {
   /// create an [GithubFileDiff].
-  const GithubFileDiff(this.sha, this.filename, this.patch);
+  const GithubFileDiff(this.sha, this.filename, {this.patch});
 
   /// sha of the file.
   final String sha;
@@ -26,6 +29,6 @@ class GithubFileDiff {
 
   @override
   String toString() {
-    return "GithubFileDiff{sha: $sha, filename: $filename, patch: $patch}";
+    return 'GithubFileDiff{sha: $sha, filename: $filename, patch: $patch}';
   }
 }

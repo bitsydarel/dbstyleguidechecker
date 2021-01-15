@@ -1,22 +1,23 @@
 name: dbstyleguidechecker
 description: A tool that help you verify a project agains code style guide and automatize pull request review.
-version: 1.0.4
+version: 2.0.1
 homepage: https://github.com/bitsydarel/dbstyleguidechecker
-author: darelbitsy <bitsydarel@gmail.com>
+repository: https://github.com/bitsydarel/dbstyleguidechecker
+issue_tracker: https://github.com/bitsydarel/dbstyleguidechecker/issues
 
 environment:
   sdk: '>=2.4.0 <3.0.0'
 
 dependencies:
-  path: ^1.6.4
-  args: ^1.5.2
-  meta: ^1.1.7
-  http: ^0.12.0+2
-  io: ^0.3.3
+  path: ^1.7.0
+  args: ^1.6.0
+  meta: ^1.2.4
+  http: ^0.12.2
+  io: ^0.3.4
 
 dev_dependencies:
-  flutter_code_style: ^1.6.3
-  test: ^1.8.0
+  flutter_code_style: ^2.0.1
+  test: ^1.15.7
 
 executables:
   dbstyleguidechecker:

@@ -1,8 +1,10 @@
-import "dart:convert";
-import "dart:io";
+import 'dart:convert';
+import 'dart:io';
 
-import "package:dbstyleguidechecker/dbstyleguidechecker.dart";
-import "package:dbstyleguidechecker/src/expections.dart";
+import 'package:dbstyleguidechecker/dbstyleguidechecker.dart';
+import 'package:dbstyleguidechecker/src/exceptions.dart';
+
+import 'package:dbstyleguidechecker/src/checkers/dart/dart_project_style_guide_checker.dart';
 
 /// Flutter project style guide linter.
 class FlutterProjectStyleGuideChecker extends DartProjectStyleGuideChecker {
@@ -10,23 +12,23 @@ class FlutterProjectStyleGuideChecker extends DartProjectStyleGuideChecker {
   const FlutterProjectStyleGuideChecker(
     File styleGuide,
     Directory projectDir,
-    DBStyleGuideViolationParser parser,
-    DBStyleGuideCheckReporter reporter,
+    CodeStyleViolationsParser parser,
+    CodeStylesViolationsReporter reporter,
   ) : super(styleGuide, projectDir, parser, reporter);
 
   @override
   Future<void> runPubGet() {
     return Process.run(
-      "flutter",
-      ["packages", "get"],
+      'flutter',
+      <String>['packages', 'get'],
       runInShell: true,
       stdoutEncoding: utf8,
-    ).then<void>((result) {
-      final errorOutput = result.stderr.toString();
+    ).then<void>((ProcessResult result) {
+      final String errorOutput = result.stderr.toString();
 
       if (errorOutput.isNotEmpty) {
         throw UnrecoverableException(
-          "could not run flutter packages get: $errorOutput",
+          'could not run flutter packages get: $errorOutput',
           exitPackageUpdatedFailed,
         );
       }

@@ -1,19 +1,88 @@
-A command-line tool that help you verify that a project follow a specific code style guideline.
+# dbstyleguidechecker
 
-It's also help you automate your code style guideline check on github pull requests.
+A code style violations script for dart, flutter and other.
+
+## Overview
+
+A command-line tool that help you verify that code in a project follow a specific code style guideline.
+
+It's also help you automate your code style check on github pull requests.
 
 [license](https://github.com/bitsydarel/dbstyleguidechecker/blob/master/LICENSE).
 
-Usage: dbstyleguidechecker --style-guide [path to analysis_options.yaml] [local project directory]
+<br>
 
-Options: -s, --style-guide      specify the code style guide to use (defaults to "analysis_options.yaml")
+## Installation
 
--f, --[no-]flutter              should be added if it's flutter project
+For usage everywhere in the system.
 
--g, --github-repo               github repository to push style guide violation on the pull request (defaults to "")
+```bash
+pub global activate dbstyleguidechecker
+```
 
--p, --github-pull-request-id    github pull request id
+For usage only in the current package.
 
--t, --github-api-token          github api access token (defaults to "")
+```bash
+pub activate dbstyleguidechecker
+```
+<br>
 
--h, --[no-]help                 print help message
+<br>
+
+## Usage
+
+```bash
+dbstyleguidechecker --project-type [project type] [local project directory]
+```
+
+Options:
+
+--code-style specify the code style guide to use (defaults to "analysis_options.yaml")
+
+--project-type specify the type of project to analyze, default to "dart", available options are ["dart", "flutter"]
+
+--reporter-type specify the reporter type, default to 'console', available are ['console', 'file', 'github']
+
+--vcs-url repository to push code style violations on the pull request (currently supported only for reporter type
+github).
+
+--vcs-pull-request-id to push code style violations on (currently supported only for reporter type github).
+
+--vcs-access-token api access token used to push code style violations on pull request (currently supported only for
+reporter type github).
+
+--reporter-output-file where code violation will be reported (currently supported only for reporter type file).
+
+--help print help message
+
+<br>
+
+<br>
+
+## Example
+
+Use code style from different location then current project or different file name.
+
+```bash
+dbstyleguidechecker --project-type dart --code-style [path to code style file] example
+```
+
+Report code style violations to console.
+
+```bash
+dbstyleguidechecker --project-type dart example
+```
+
+Report code style violations to github
+
+```bash
+dbstyleguidechecker --project-type dart --reporter-type github --vcs-url https://github.com/bitsydarel/dbstyleguidechecker --vcs-pull-request-id [pull-request-id] --vcs-access-token [github-api-access-token] example
+```
+
+Report code style violations to file.
+
+```bash
+dbstyleguidechecker --project-type dart --reporter-type file --reporter-output-file example/log.txt example
+```
+
+<br>
