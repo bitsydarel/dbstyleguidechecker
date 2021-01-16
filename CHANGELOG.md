@@ -16,6 +16,7 @@
 - Removed stack trace in error message.
 
 ## 2.0.0
+
 - Redesign of the script arguments.
 
 - An updated documentation with examples and guide for installations.
@@ -25,3 +26,7 @@
 ## 2.0.1
 
 - Cleaner README.md
+
+## 2.0.2
+
+- dart format to improve score
