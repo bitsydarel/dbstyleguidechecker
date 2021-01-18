@@ -177,6 +177,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./bin/dbstyleguidechecker-windows
-          asset_name: dbstyleguidechecker-windows
+          asset_path: ./bin/dbstyleguidechecker-windows.exe
+          asset_name: dbstyleguidechecker-windows.exe
           asset_content_type: application/octet-stream
