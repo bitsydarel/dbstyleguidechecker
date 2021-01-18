@@ -152,6 +152,9 @@ jobs:
         with:
           args: install dart-sdk
 
+      - name: Refresh Environment variable
+        run: refreshenv
+
       - name: Print Dart SDK version
         run: dart --version
 
