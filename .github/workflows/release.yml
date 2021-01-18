@@ -60,90 +60,90 @@ jobs:
           release_name: Release ${{ github.ref }}
           # Path to file with information about the tag.
           body_path: CHANGELOG.md # optional
-    
-  
-  release-linux:
-    needs: [release]
-    
-    runs-on: ubuntu-latest
-    
-    container:
-      image:  google/dart:latest
-    
-    steps:
-      - uses: actions/checkout@v2
 
-      - name: Print Dart SDK version
-        run: dart --version
 
-      - name: Install dependencies
-        run: dart pub get
-
-      - name: Generate linux native binary
-        run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-linux
-
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@v1.2.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Linux Build Artifact
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./bin/dbstyleguidechecker-linux
-          asset_name: dbstyleguidechecker-linux
-          asset_content_type: application/octet-stream
-  
-  release-macos:
-    needs: [release]
-    
-    runs-on: macos-latest
-      
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install brew dart repo
-        run: brew tap dart-lang/dart
-
-      - name: Install dart with brew
-        run: brew install dart
-
-      - name: Print Dart SDK version
-        run: dart --version
-
-      - name: Install dependencies
-        run: dart pub get
-
-      - name: Generate MacOs native binary
-        run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-macos
-
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@v1.2.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload MacOs Build Artifact
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ./bin/dbstyleguidechecker-macos
-          asset_name: dbstyleguidechecker-macos
-          asset_content_type: application/octet-stream
-  
+  #  release-linux:
+  #    needs: [release]
+  #
+  #    runs-on: ubuntu-latest
+  #
+  #    container:
+  #      image:  google/dart:latest
+  #
+  #    steps:
+  #      - uses: actions/checkout@v2
+  #
+  #      - name: Print Dart SDK version
+  #        run: dart --version
+  #
+  #      - name: Install dependencies
+  #        run: dart pub get
+  #
+  #      - name: Generate linux native binary
+  #        run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-linux
+  #
+  #      - name: Get release
+  #        id: get_release
+  #        uses: bruceadams/get-release@v1.2.2
+  #        env:
+  #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #
+  #      - name: Upload Linux Build Artifact
+  #        id: upload-release-asset
+  #        uses: actions/upload-release-asset@v1
+  #        env:
+  #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #        with:
+  #          upload_url: ${{ steps.get_release.outputs.upload_url }}
+  #          asset_path: ./bin/dbstyleguidechecker-linux
+  #          asset_name: dbstyleguidechecker-linux
+  #          asset_content_type: application/octet-stream
+  #
+  #  release-macos:
+  #    needs: [release]
+  #
+  #    runs-on: macos-latest
+  #
+  #    steps:
+  #      - uses: actions/checkout@v2
+  #
+  #      - name: Install brew dart repo
+  #        run: brew tap dart-lang/dart
+  #
+  #      - name: Install dart with brew
+  #        run: brew install dart
+  #
+  #      - name: Print Dart SDK version
+  #        run: dart --version
+  #
+  #      - name: Install dependencies
+  #        run: dart pub get
+  #
+  #      - name: Generate MacOs native binary
+  #        run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-macos
+  #
+  #      - name: Get release
+  #        id: get_release
+  #        uses: bruceadams/get-release@v1.2.2
+  #        env:
+  #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #
+  #      - name: Upload MacOs Build Artifact
+  #        id: upload-release-asset
+  #        uses: actions/upload-release-asset@v1
+  #        env:
+  #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #        with:
+  #          upload_url: ${{ steps.get_release.outputs.upload_url }}
+  #          asset_path: ./bin/dbstyleguidechecker-macos
+  #          asset_name: dbstyleguidechecker-macos
+  #          asset_content_type: application/octet-stream
+  #
   release-windows:
-    needs: [release]
-    
+    needs: [ release ]
+
     runs-on: windows-latest
-      
+
     steps:
       - uses: actions/checkout@v2
 
@@ -154,6 +154,9 @@ jobs:
 
       - name: Refresh Environment variable
         run: refreshenv
+
+      - name: List Dart sdk install file
+        run: ls C:\tools
 
       - name: Print Dart SDK version
         run: dart --version
