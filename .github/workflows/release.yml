@@ -1,0 +1,146 @@
+name: Dart
+
+on:
+  push:
+    branches:
+      # Push events to branches matching refs/heads/releases/10
+      - 'release/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Note that this workflow uses the latest stable version of the Dart SDK.
+    # Docker images for other release channels - like dev and beta - are also
+    # available. See https://hub.docker.com/r/google/dart/ for the available
+    # images.
+    container:
+      image:  google/dart:latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Print Dart SDK version
+        run: dart --version
+
+      - name: Install dependencies
+        run: dart pub get
+
+      # Uncomment this step to verify the use of 'dart format' on each commit.
+      # - name: Verify formatting
+      #   run: dart format --output=none --set-exit-if-changed .
+
+      # Consider passing '--fatal-infos' for slightly stricter analysis.
+      - name: Analyze project source
+        run: dart analyze
+
+      # Your project will need to have tests in test/ and a dependency on
+      # package:test for this step to succeed. Note that Flutter projects will
+      # want to change this to 'flutter test'.
+      - name: Run tests
+        run: dart test
+  
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Create a Release
+        id: create_release
+        uses: actions/create-release@v1.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # The name of the tag. This should come from the webhook payload, `github.GITHUB_REF` when a user pushes a new tag
+          tag_name: ${{ github.ref }}
+          # The name of the release. For example, `Release v1.0.1`
+          release_name: Release ${{ github.ref }}
+          # Path to file with information about the tag.
+          body_path: CHANGELOG.md # optional
+    
+  
+  release-linux:
+    needs: [release]
+    
+    runs-on: ubuntu-latest
+    
+    container:
+      image:  google/dart:latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Print Dart SDK version
+        run: dart --version
+      
+      - name: Install dependencies
+        run: dart pub get
+      
+      - name: Generate linux native binary
+        run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-linux
+      
+      - name: Upload Linux Build Artifact
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ jobs.release.steps.create_release.outputs.upload_url }}
+          asset_path: ./bin/dbstyleguidechecker-linux
+          asset_name: dbstyleguidechecker-linux
+          asset_content_type: application/octet-stream
+  
+  release-macos:
+    needs: [release]
+    
+    runs-on: macos-latest
+    
+    container:
+      image: google/dart:latest
+      
+    steps:
+      - name: Install dependencies
+        run: dart pub get
+      
+      - name: Generate MacOs native binary
+        run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-macos
+
+      - name: Upload MacOs Build Artifact
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ jobs.release.steps.create_release.outputs.upload_url }}
+          asset_path: ./bin/dbstyleguidechecker-macos
+          asset_name: dbstyleguidechecker-macos
+          asset_content_type: application/octet-stream
+  
+  release-windows:
+    needs: [release]
+    
+    runs-on: windows-latest
+    
+    container: 
+      image: google/dart:latest
+      
+    steps:
+      - name: Install dependencies
+        run: dart pub get
+      
+      - name: Generate Windows native binary
+        run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-windows
+      
+      - name: Upload Windows Build Artifact
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ jobs.release.steps.create_release.outputs.upload_url }}
+          asset_path: ./bin/dbstyleguidechecker-windows
+          asset_name: dbstyleguidechecker-windows
+          asset_content_type: application/octet-stream
+
+    
