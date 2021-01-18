@@ -83,10 +83,10 @@ jobs:
         run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-linux
 
       - name: Get release
-          id: get_release
-          uses: bruceadams/get-release@v1.2.2
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: get_release
+        uses: bruceadams/get-release@v1.2.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Linux Build Artifact
         id: upload-release-asset
@@ -115,10 +115,10 @@ jobs:
         run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-macos
 
       - name: Get release
-          id: get_release
-          uses: bruceadams/get-release@v1.2.2
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: get_release
+        uses: bruceadams/get-release@v1.2.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload MacOs Build Artifact
         id: upload-release-asset
@@ -147,10 +147,10 @@ jobs:
         run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-windows
 
       - name: Get release
-          id: get_release
-          uses: bruceadams/get-release@v1.2.2
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: get_release
+        uses: bruceadams/get-release@v1.2.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Windows Build Artifact
         id: upload-release-asset
