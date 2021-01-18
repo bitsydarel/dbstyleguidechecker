@@ -14,11 +14,11 @@ class DartAnalyzerViolationParser extends CodeStyleViolationsParser {
   static final RegExp _regexp = RegExp(
     // ignore: prefer_interpolation_to_compose_strings
     '^' + // beginning of line
-        '([\\w_\\.]+)\\|' * 3 + // first three error notes
-        '([^\\|]+)\\|' + // file path
-        '([\\w_\\.]+)\\|' * 3 + // line, column, length
+        r'([\w_\.]+)\|' * 3 + // first three error notes
+        r'([^\|]+)\|' + // file path
+        r'([\w_\.]+)\|' * 3 + // line, column, length
         '(.*?)' + // rest is the error message
-        '\$', // end of line
+        r'$', // end of line
   );
 
   @override

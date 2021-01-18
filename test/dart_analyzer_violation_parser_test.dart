@@ -29,7 +29,7 @@ void main() {
 
         expect(
           violationParser.parseStyleGuideViolation(violation),
-          CodeStyleViolation(
+          const CodeStyleViolation(
             severity: ViolationSeverity.info,
             type: 'LINT',
             file:
@@ -51,7 +51,7 @@ void main() {
 
           expect(
             violationParser.parseStyleGuideViolation(lintViolation),
-            CodeStyleViolation(
+            const CodeStyleViolation(
               severity: ViolationSeverity.warning,
               type: 'LINT',
               file:
@@ -73,7 +73,7 @@ void main() {
 
           expect(
             violationParser.parseStyleGuideViolation(lintViolation),
-            CodeStyleViolation(
+            const CodeStyleViolation(
               severity: ViolationSeverity.error,
               type: 'LINT',
               file:

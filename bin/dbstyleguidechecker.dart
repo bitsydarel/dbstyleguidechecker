@@ -98,7 +98,7 @@ CodeStylesViolationsReporter _createReporter(
       final File reporterOutputFile = scriptArgument.reporterOutputFile;
 
       if (reporterOutputFile == null) {
-        throw UnrecoverableException(
+        throw const UnrecoverableException(
           "Reporter of type 'file' specified "
           'but reporter output file not specified.',
           exitMissingRequiredArgument,
@@ -110,7 +110,7 @@ CodeStylesViolationsReporter _createReporter(
       final VcsArgument vcs = scriptArgument.vcs;
 
       if (vcs == null) {
-        throw UnrecoverableException(
+        throw const UnrecoverableException(
           "Reporter of type 'github' specified but vcs parameter not specified",
           exitMissingRequiredArgument,
         );
@@ -124,7 +124,7 @@ CodeStylesViolationsReporter _createReporter(
       );
       break;
     default:
-      throw UnrecoverableException(
+      throw const UnrecoverableException(
         'Invalid reporter type provided or not supported',
         exitInvalidArgument,
       );

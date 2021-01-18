@@ -30,3 +30,7 @@
 ## 2.0.2
 
 - dart format to improve score
+
+## 2.0.3
+
+- code cleanup and improvement

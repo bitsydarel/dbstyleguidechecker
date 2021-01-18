@@ -113,9 +113,7 @@ void printHelpMessage([final String message]) {
     print(red.wrap('$message\n'));
   }
 
-  final String options = LineSplitter.split(argumentParser.usage)
-      .map((String l) => '$l')
-      .join('\n');
+  final String options = LineSplitter.split(argumentParser.usage).map((String l) => l).join('\n');
 
   // ignore: avoid_print
   print(
@@ -171,7 +169,7 @@ class VcsArgument {
     if (vcsUrl is String && vcsUrl.isNotEmpty) {
       return vcsUrl;
     } else {
-      throw UnrecoverableException(
+      throw const UnrecoverableException(
         '$_vcsUrlParameter is not specified',
         exitMissingRequiredArgument,
       );
@@ -184,7 +182,7 @@ class VcsArgument {
     if (pullRequestId is String && pullRequestId.isNotEmpty) {
       return pullRequestId;
     } else {
-      throw UnrecoverableException(
+      throw const UnrecoverableException(
         '$_vcsPullRequestIdParameter is not specified',
         exitMissingRequiredArgument,
       );
@@ -197,7 +195,7 @@ class VcsArgument {
     if (vcsAccessToken is String && vcsAccessToken.isNotEmpty) {
       return vcsAccessToken;
     } else {
-      throw UnrecoverableException(
+      throw const UnrecoverableException(
         '$_vcsAccessTokenParameter is not specified',
         exitMissingRequiredArgument,
       );
@@ -272,7 +270,7 @@ class ScriptArgument {
 
   static String _parseProjectType(final ArgResults argResults) {
     if (!argResults.wasParsed(_projectTypeParameter)) {
-      throw UnrecoverableException(
+      throw const UnrecoverableException(
         '$_projectTypeParameter parameter is required',
         exitMissingRequiredArgument,
       );
@@ -295,7 +293,7 @@ class ScriptArgument {
 
   static Directory _parseProjectDirParameter(final ArgResults argResults) {
     if (argResults.rest.length != 1) {
-      throw UnrecoverableException(
+      throw const UnrecoverableException(
         'invalid project dir path',
         exitInvalidArgument,
       );
@@ -304,8 +302,10 @@ class ScriptArgument {
     final Directory projectDir = getResolvedProjectDir(argResults.rest[0]);
 
     if (!projectDir.existsSync()) {
-      throw UnrecoverableException(
-          'specified local project dir does not exist', exitInvalidArgument);
+      throw const UnrecoverableException(
+        'specified local project dir does not exist',
+        exitInvalidArgument,
+      );
     }
 
     return projectDir;
@@ -327,7 +327,7 @@ class ScriptArgument {
     }
 
     if (codeStyleFile == null || !codeStyleFile.existsSync()) {
-      throw UnrecoverableException(
+      throw const UnrecoverableException(
         'specified $_codeStyleParameter parameter file does not exist',
         exitInvalidArgument,
       );
@@ -344,7 +344,7 @@ class ScriptArgument {
         _supportedReporterType.contains(reporterType)) {
       return reporterType;
     } else {
-      throw UnrecoverableException(
+      throw const UnrecoverableException(
         'Invalid $_reporterTypeParameter provided or not supported',
         exitInvalidArgument,
       );
@@ -367,7 +367,7 @@ class ScriptArgument {
     }
 
     if (outputFile == null) {
-      throw UnrecoverableException(
+      throw const UnrecoverableException(
         'specified $_reporterOutputFileParameter parameter file does not exist',
         exitInvalidArgument,
       );
