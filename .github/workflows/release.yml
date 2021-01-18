@@ -86,7 +86,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ jobs.release.steps.create_release.outputs.upload_url }}
+          upload_url: ${{ release.steps.create_release.outputs.upload_url }}
           asset_path: ./bin/dbstyleguidechecker-linux
           asset_name: dbstyleguidechecker-linux
           asset_content_type: application/octet-stream
