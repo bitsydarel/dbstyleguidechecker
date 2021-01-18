@@ -11,7 +11,7 @@ void main() {
           'dart_package_linter/lib/src/lint_violation_parser.dart';
 
       expect(
-        () => getFileRelativePath(filePath, 'dartlinter'),
+        () => getFileRelativePath(filePath, 'dbstyleguidechecker'),
         throwsA(const TypeMatcher<AssertionError>()),
       );
     },
