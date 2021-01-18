@@ -5,7 +5,7 @@ import 'package:dbstyleguidechecker/src/exceptions.dart';
 import 'package:path/path.dart' as path;
 
 final RegExp _diffFinder = RegExp(
-  '^@@\\s-(\\d+),\\d+\\s\\+(\\d+),\\d+\\s@@',
+  r'^@@\s-(\d+),\d+\s\+(\d+),\d+\s@@',
 );
 
 /// Get the relative path of a file from it's parent directory.

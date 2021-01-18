@@ -34,20 +34,13 @@ Future<void> main(List<String> arguments) async {
 
   Directory.current = scriptArgument.projectDir.path;
 
-  CodeStylesViolationsReporter reporter;
-
-  try {
-    reporter = _createReporter(scriptArgument);
-  } on UnrecoverableException catch (exception) {
-    printHelpMessage(exception.reason);
-    exitCode = exception.exitCode;
-    return;
-  }
-
   CodeStyleViolationsChecker checker;
 
   try {
-    checker = createParser(scriptArgument, reporter);
+    final CodeStylesViolationsReporter reporter =
+        _createReporter(scriptArgument);
+
+    checker = _createChecker(scriptArgument, reporter);
   } on UnrecoverableException catch (exception) {
     printHelpMessage(exception.reason);
     exitCode = exception.exitCode;
@@ -64,9 +57,9 @@ Future<void> main(List<String> arguments) async {
   });
 }
 
-CodeStyleViolationsChecker createParser(
-  ScriptArgument scriptArgument,
-  CodeStylesViolationsReporter reporter,
+CodeStyleViolationsChecker _createChecker(
+  final ScriptArgument scriptArgument,
+  final CodeStylesViolationsReporter reporter,
 ) {
   switch (scriptArgument.projectType) {
     case dartProjectType:
@@ -94,7 +87,9 @@ CodeStyleViolationsChecker createParser(
   }
 }
 
-CodeStylesViolationsReporter _createReporter(ScriptArgument scriptArgument) {
+CodeStylesViolationsReporter _createReporter(
+  final ScriptArgument scriptArgument,
+) {
   switch (scriptArgument.reporterType) {
     case reporterOfTypeConsole:
       return const ConsoleCodeStyleViolationsReporter();
@@ -103,7 +98,7 @@ CodeStylesViolationsReporter _createReporter(ScriptArgument scriptArgument) {
       final File reporterOutputFile = scriptArgument.reporterOutputFile;
 
       if (reporterOutputFile == null) {
-        throw UnrecoverableException(
+        throw const UnrecoverableException(
           "Reporter of type 'file' specified "
           'but reporter output file not specified.',
           exitMissingRequiredArgument,
@@ -115,7 +110,7 @@ CodeStylesViolationsReporter _createReporter(ScriptArgument scriptArgument) {
       final VcsArgument vcs = scriptArgument.vcs;
 
       if (vcs == null) {
-        throw UnrecoverableException(
+        throw const UnrecoverableException(
           "Reporter of type 'github' specified but vcs parameter not specified",
           exitMissingRequiredArgument,
         );
@@ -129,7 +124,7 @@ CodeStylesViolationsReporter _createReporter(ScriptArgument scriptArgument) {
       );
       break;
     default:
-      throw UnrecoverableException(
+      throw const UnrecoverableException(
         'Invalid reporter type provided or not supported',
         exitInvalidArgument,
       );

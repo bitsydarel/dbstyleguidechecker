@@ -29,7 +29,7 @@ void main() {
 
         expect(
           violationParser.parseStyleGuideViolation(violation),
-          CodeStyleViolation(
+          const CodeStyleViolation(
             severity: ViolationSeverity.info,
             type: 'LINT',
             file:
@@ -51,7 +51,7 @@ void main() {
 
           expect(
             violationParser.parseStyleGuideViolation(lintViolation),
-            CodeStyleViolation(
+            const CodeStyleViolation(
               severity: ViolationSeverity.warning,
               type: 'LINT',
               file:
@@ -73,7 +73,7 @@ void main() {
 
           expect(
             violationParser.parseStyleGuideViolation(lintViolation),
-            CodeStyleViolation(
+            const CodeStyleViolation(
               severity: ViolationSeverity.error,
               type: 'LINT',
               file:
@@ -120,7 +120,8 @@ void main() {
   test(
     'should parse the lint result and return a list of lint violations',
     () async {
-      final String projectDir = path.context.current;
+      const String projectDir =
+          '/Users/darelbitsy/IdeaProjects/dbstyleguidechecker';
 
       final String lines = await _parseLintResultFile('dart_lint_report.log');
 
@@ -143,7 +144,8 @@ void main() {
     'should parse the lint result and return a list of '
     'violations with one invalid violation',
     () async {
-      final String projectDir = path.context.current;
+      const String projectDir =
+          '/Users/darelbitsy/IdeaProjects/dbstyleguidechecker';
 
       final String lines =
           await _parseLintResultFile('dart_lint_report_with_invalid_part.log');

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dbstyleguidechecker/src/utils/file_utils.dart';
 import 'package:test/test.dart';
 
@@ -11,7 +9,7 @@ void main() {
           'dart_package_linter/lib/src/lint_violation_parser.dart';
 
       expect(
-        () => getFileRelativePath(filePath, 'dartlinter'),
+        () => getFileRelativePath(filePath, 'dbstyleguidechecker'),
         throwsA(const TypeMatcher<AssertionError>()),
       );
     },
@@ -112,12 +110,10 @@ void main() {
       test(
         'should return false if paths are not the same',
         () {
-          Directory.current = '../dbpage_routing/example';
-
           expect(
             isSameFilePath(
-              'example/lib/dbpage_routing_example.dart',
-              'test/posts_page_path_test.dart',
+              'example/lib/example.dart',
+              'test/file_utils_test.dart',
             ),
             completion(isFalse),
           );
