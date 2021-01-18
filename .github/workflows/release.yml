@@ -103,11 +103,19 @@ jobs:
     needs: [release]
     
     runs-on: macos-latest
-    
-    container:
-      image: google/dart:latest
       
     steps:
+      - uses: actions/checkout@v2
+
+      - name: Install brew dart repo
+        run: brew tap dart-lang/dart
+
+      - name: Install dart with brew
+        run: brew install dart
+
+      - name: Print Dart SDK version
+        run: dart --version
+
       - name: Install dependencies
         run: dart pub get
 
@@ -135,16 +143,23 @@ jobs:
     needs: [release]
     
     runs-on: windows-latest
-    
-    container: 
-      image: google/dart:latest
       
     steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Dart SDK
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: install dart-sdk
+
+      - name: Print Dart SDK version
+        run: dart --version
+
       - name: Install dependencies
         run: dart pub get
 
       - name: Generate Windows native binary
-        run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-windows
+        run: dart2native bin/dbstyleguidechecker.dart -o bin/dbstyleguidechecker-windows.exe
 
       - name: Get release
         id: get_release
