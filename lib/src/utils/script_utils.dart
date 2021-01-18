@@ -113,7 +113,8 @@ void printHelpMessage([final String message]) {
     print(red.wrap('$message\n'));
   }
 
-  final String options = LineSplitter.split(argumentParser.usage).map((String l) => l).join('\n');
+  final String options =
+      LineSplitter.split(argumentParser.usage).map((String l) => l).join('\n');
 
   // ignore: avoid_print
   print(
