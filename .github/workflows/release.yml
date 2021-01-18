@@ -177,5 +177,3 @@ jobs:
           asset_path: ./bin/dbstyleguidechecker-windows
           asset_name: dbstyleguidechecker-windows
           asset_content_type: application/octet-stream
-
-    
