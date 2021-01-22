@@ -31,37 +31,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'package:meta/meta.dart';
+import 'dart:convert';
+import 'dart:io';
 
-/// Github file diff.
-@immutable
-class GithubFileDiff {
-  /// create an [GithubFileDiff].
-  const GithubFileDiff(this.sha, this.filename, {this.patch});
+import 'package:dbstyleguidechecker/dbstyleguidechecker.dart';
+import 'package:dbstyleguidechecker/src/exceptions.dart';
 
-  /// sha of the file.
-  final String sha;
+import 'package:dbstyleguidechecker/src/checkers/dart_project_style_guide_checker.dart';
 
-  /// filename of the file relative to root dir.
-  final String filename;
-
-  /// patch of the file.
-  final String patch;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is GithubFileDiff &&
-              runtimeType == other.runtimeType &&
-              sha == other.sha &&
-              filename == other.filename &&
-              patch == other.patch;
+/// Flutter project style guide linter.
+class FlutterProjectStyleGuideChecker extends DartProjectStyleGuideChecker {
+  /// create a Flutter code style guide linter.
+  const FlutterProjectStyleGuideChecker(
+    File styleGuide,
+    Directory projectDir,
+    CodeStyleViolationsParser parser,
+    CodeStyleViolationsReporter reporter,
+  ) : super(styleGuide, projectDir, parser, reporter);
 
   @override
-  int get hashCode => sha.hashCode ^ filename.hashCode ^ patch.hashCode;
+  Future<void> runPubGet() {
+    return Process.run(
+      'flutter',
+      <String>['packages', 'get'],
+      runInShell: true,
+      stdoutEncoding: utf8,
+    ).then<void>((ProcessResult result) {
+      final String errorOutput = result.stderr.toString();
 
-  @override
-  String toString() {
-    return 'GithubFileDiff{sha: $sha, filename: $filename, patch: $patch}';
+      if (errorOutput.isNotEmpty) {
+        throw UnrecoverableException(
+          'could not run flutter packages get: $errorOutput',
+          exitPackageUpdatedFailed,
+        );
+      }
+    });
   }
 }

@@ -34,3 +34,9 @@
 ## 2.0.3
 
 - code cleanup and improvement
+
+## 2.0.4
+
+- Added new reporter for json
+
+- Cleanup code and documentation

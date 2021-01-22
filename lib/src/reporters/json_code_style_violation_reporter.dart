@@ -31,37 +31,63 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:dbstyleguidechecker/dbstyleguidechecker.dart';
+import 'package:dbstyleguidechecker/src/code_style_violation.dart';
 import 'package:meta/meta.dart';
 
-/// Github file diff.
-@immutable
-class GithubFileDiff {
-  /// create an [GithubFileDiff].
-  const GithubFileDiff(this.sha, this.filename, {this.patch});
-
-  /// sha of the file.
-  final String sha;
-
-  /// filename of the file relative to root dir.
-  final String filename;
-
-  /// patch of the file.
-  final String patch;
+///
+class JsonCodeStyleViolationReporter extends CodeStyleViolationsReporter {
+  ///
+  const JsonCodeStyleViolationReporter();
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is GithubFileDiff &&
-              runtimeType == other.runtimeType &&
-              sha == other.sha &&
-              filename == other.filename &&
-              patch == other.patch;
+  Future<void> report(final List<CodeStyleViolation> violations) async {
+    final Map<String, List<Map<String, Object>>> mapped =
+        <String, List<Map<String, Object>>>{};
 
-  @override
-  int get hashCode => sha.hashCode ^ filename.hashCode ^ patch.hashCode;
+    _filterBySeverityAndUpdate(ViolationSeverity.info, violations, mapped);
 
-  @override
-  String toString() {
-    return 'GithubFileDiff{sha: $sha, filename: $filename, patch: $patch}';
+    _filterBySeverityAndUpdate(ViolationSeverity.warning, violations, mapped);
+
+    _filterBySeverityAndUpdate(ViolationSeverity.error, violations, mapped);
+
+    _filterBySeverityAndUpdate(ViolationSeverity.invalid, violations, mapped);
+
+    stdout.writeln(jsonEncode(mapped));
+  }
+
+  void _filterBySeverityAndUpdate(
+    final ViolationSeverity severity,
+    final List<CodeStyleViolation> violations,
+    final Map<String, Object> json,
+  ) {
+    final List<Map<String, Object>> filtered = filterViolationBySeverity(
+      severity,
+      violations,
+    );
+
+    if (filtered.isNotEmpty) {
+      json[severity.id] = filtered;
+    }
+  }
+
+  ///
+  @visibleForTesting
+  List<Map<String, Object>> filterViolationBySeverity(
+    final ViolationSeverity severity,
+    final List<CodeStyleViolation> violations,
+  ) {
+    final List<Map<String, Object>> filtered = <Map<String, Object>>[];
+
+    for (final CodeStyleViolation violation in violations) {
+      if (severity == violation.severity) {
+        filtered.add(violation.toJson());
+      }
+    }
+
+    return filtered;
   }
 }

@@ -31,37 +31,63 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'package:meta/meta.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:meta/meta.dart' show protected;
 
-/// Github file diff.
-@immutable
-class GithubFileDiff {
-  /// create an [GithubFileDiff].
-  const GithubFileDiff(this.sha, this.filename, {this.patch});
+import 'package:dbstyleguidechecker/dbstyleguidechecker.dart';
+import 'package:dbstyleguidechecker/src/exceptions.dart';
 
-  /// sha of the file.
-  final String sha;
-
-  /// filename of the file relative to root dir.
-  final String filename;
-
-  /// patch of the file.
-  final String patch;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is GithubFileDiff &&
-              runtimeType == other.runtimeType &&
-              sha == other.sha &&
-              filename == other.filename &&
-              patch == other.patch;
+/// Dart project style guide linter.
+class DartProjectStyleGuideChecker extends CodeStyleViolationsChecker {
+  /// create a Dart code style guide linter.
+  const DartProjectStyleGuideChecker(
+    File styleGuide,
+    Directory projectDir,
+    CodeStyleViolationsParser parser,
+    CodeStyleViolationsReporter reporter,
+  ) : super(styleGuide, projectDir, parser, reporter);
 
   @override
-  int get hashCode => sha.hashCode ^ filename.hashCode ^ patch.hashCode;
+  Future<String> getCodeStyleViolations() {
+    return runPubGet().then(
+          (_) => Process.run(
+        'dartanalyzer',
+        <String>[
+          '--format',
+          'machine',
+          '--options',
+          styleGuide.path,
+          projectDir.path,
+        ],
+        runInShell: true,
+        stdoutEncoding: utf8,
+      ).then((ProcessResult processResult) {
+        final String output = processResult.stdout.toString();
 
-  @override
-  String toString() {
-    return 'GithubFileDiff{sha: $sha, filename: $filename, patch: $patch}';
+        return output.isEmpty ? processResult.stderr.toString() : output;
+      }),
+    );
+  }
+
+  /// Run the
+  @protected
+  Future<void> runPubGet() {
+    return Process.run(
+      'pub',
+      <String>['get'],
+      runInShell: true,
+      stdoutEncoding: utf8,
+    ).then<void>((ProcessResult result) {
+      final String errorOutput = result.stderr.toString();
+
+      if (errorOutput.isNotEmpty) {
+        throw UnrecoverableException(
+          'could not run pub get: $errorOutput',
+          exitPackageUpdatedFailed,
+        );
+      }
+      return;
+    });
   }
 }
