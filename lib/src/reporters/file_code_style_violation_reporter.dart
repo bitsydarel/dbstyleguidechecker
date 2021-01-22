@@ -31,37 +31,37 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'package:meta/meta.dart';
+import 'dart:io';
 
-/// Github file diff.
-@immutable
-class GithubFileDiff {
-  /// create an [GithubFileDiff].
-  const GithubFileDiff(this.sha, this.filename, {this.patch});
+import 'package:dbstyleguidechecker/dbstyleguidechecker.dart';
+import 'package:dbstyleguidechecker/src/code_style_violation.dart';
 
-  /// sha of the file.
-  final String sha;
+/// File [CodeStyleViolationsReporter]
+class FileCodeStyleViolationsReporter extends CodeStyleViolationsReporter {
+  /// File used to write the report to.
+  final File file;
 
-  /// filename of the file relative to root dir.
-  final String filename;
-
-  /// patch of the file.
-  final String patch;
+  /// Create a [CodeStyleViolationsReporter]
+  /// that [CodeStyleViolation] to the specified [file].
+  const FileCodeStyleViolationsReporter(this.file);
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is GithubFileDiff &&
-              runtimeType == other.runtimeType &&
-              sha == other.sha &&
-              filename == other.filename &&
-              patch == other.patch;
+  Future<void> report(List<CodeStyleViolation> violations) async {
+    final IOSink writer = file.openWrite(mode: FileMode.append);
 
-  @override
-  int get hashCode => sha.hashCode ^ filename.hashCode ^ patch.hashCode;
+    for (final CodeStyleViolation violation in violations) {
+      writer.writeln(
+        '${violation.severity.id}|'
+            '${violation.type}|'
+            '${violation.rule}|'
+            '${violation.ruleDescription}|'
+            '${violation.file}|'
+            '${violation.line}',
+      );
+    }
 
-  @override
-  String toString() {
-    return 'GithubFileDiff{sha: $sha, filename: $filename, patch: $patch}';
+    await writer.flush();
+
+    await writer.close();
   }
 }

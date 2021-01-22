@@ -1,3 +1,36 @@
+/*
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2020, Bitsy Darel
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import 'package:dbstyleguidechecker/src/utils/file_utils.dart';
 import 'package:test/test.dart';
 
@@ -9,7 +42,7 @@ void main() {
           'dart_package_linter/lib/src/lint_violation_parser.dart';
 
       expect(
-        () => getFileRelativePath(filePath, 'dbstyleguidechecker'),
+            () => getFileRelativePath(filePath, 'dbstyleguidechecker'),
         throwsA(const TypeMatcher<AssertionError>()),
       );
     },
@@ -29,10 +62,10 @@ void main() {
 
   group(
     'test if file paths are the same',
-    () {
+        () {
       test(
         'should return true if paths are the same but are not fully specified',
-        () {
+            () {
           const String filePath1 =
               'lib/src/parsers/dart/dart_analyzer_violation_parser.dart';
           const String filePath2 = 'dart/dart_analyzer_violation_parser.dart';
@@ -49,16 +82,16 @@ void main() {
 
           expect(
             isSameFilePath(
-              'lib/src/style_guide_violation.dart',
-              'src/style_guide_violation.dart',
+              'lib/src/code_style_violation.dart',
+              'src/code_style_violation.dart',
             ),
             completion(isTrue),
           );
 
           expect(
             isSameFilePath(
-              'src/style_guide_violation.dart',
-              'lib/src/style_guide_violation.dart',
+              'src/code_style_violation.dart',
+              'lib/src/code_style_violation.dart',
             ),
             completion(isTrue),
           );
@@ -78,7 +111,7 @@ void main() {
       test(
         'should return true if paths are equals '
             "even if they don't contains sub paths",
-        () {
+            () {
           const String filePath1 = 'file_utils.dart';
           const String filePath2 = 'file_utils.dart';
 
@@ -91,7 +124,7 @@ void main() {
 
       test(
         'should return false if paths are not the same',
-        () {
+            () {
           expect(
             isSameFilePath('file_utils.dart', 'file_utils2.dart'),
             completion(isFalse),
@@ -109,7 +142,7 @@ void main() {
 
       test(
         'should return false if paths are not the same',
-        () {
+            () {
           expect(
             isSameFilePath(
               'example/lib/example.dart',
