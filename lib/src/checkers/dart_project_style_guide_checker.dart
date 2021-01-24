@@ -51,7 +51,7 @@ class DartProjectStyleGuideChecker extends CodeStyleViolationsChecker {
   @override
   Future<String> getCodeStyleViolations() {
     return runPubGet().then(
-          (_) => Process.run(
+      (_) => Process.run(
         'dartanalyzer',
         <String>[
           '--format',
@@ -62,6 +62,7 @@ class DartProjectStyleGuideChecker extends CodeStyleViolationsChecker {
         ],
         runInShell: true,
         stdoutEncoding: utf8,
+        stderrEncoding: utf8,
       ).then((ProcessResult processResult) {
         final String output = processResult.stdout.toString();
 
@@ -78,6 +79,7 @@ class DartProjectStyleGuideChecker extends CodeStyleViolationsChecker {
       <String>['get'],
       runInShell: true,
       stdoutEncoding: utf8,
+      stderrEncoding: utf8,
     ).then<void>((ProcessResult result) {
       final String errorOutput = result.stderr.toString();
 

@@ -70,8 +70,9 @@ Future<void> main(List<String> arguments) async {
   CodeStyleViolationsChecker checker;
 
   try {
-    final CodeStyleViolationsReporter reporter =
-        _createReporter(scriptArgument);
+    final CodeStyleViolationsReporter reporter = _createReporter(
+      scriptArgument,
+    );
 
     checker = _createChecker(scriptArgument, reporter);
   } on UnrecoverableException catch (exception) {
@@ -114,7 +115,7 @@ CodeStyleViolationsChecker _createChecker(
     default:
       throw UnrecoverableException(
         'Invalid project type specified, '
-            "supported are ${supportedProjectType.join(", ")}",
+        "supported are ${supportedProjectType.join(", ")}",
         exitInvalidArgument,
       );
   }
@@ -132,7 +133,7 @@ CodeStyleViolationsReporter _createReporter(
       if (reporterOutputFile == null) {
         throw const UnrecoverableException(
           "Reporter of type 'file' specified "
-              'but reporter output file not specified.',
+          'but reporter output file not specified.',
           exitMissingRequiredArgument,
         );
       }

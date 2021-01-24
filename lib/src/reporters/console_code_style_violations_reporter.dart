@@ -45,13 +45,23 @@ class ConsoleCodeStyleViolationsReporter extends CodeStyleViolationsReporter {
   @override
   Future<void> report(List<CodeStyleViolation> violations) async {
     for (final CodeStyleViolation violation in violations) {
-      stdout.writeln(
-        yellow.wrap(
-          '${violation.severity.id}, ${violation.ruleDescription} in file '
-          '${violation.file} at line ${violation.line}, line column '
-          '${violation.lineColumn}',
-        ),
-      );
+      if (violation.severity.level > ViolationSeverity.info.level) {
+        stderr.writeln(
+          red.wrap(
+            '${violation.severity.id}, ${violation.ruleDescription} in file '
+            '${violation.file} at line ${violation.line}, line column '
+            '${violation.lineColumn}',
+          ),
+        );
+      } else {
+        stdout.writeln(
+          yellow.wrap(
+            '${violation.severity.id}, ${violation.ruleDescription} in file '
+            '${violation.file} at line ${violation.line}, line column '
+            '${violation.lineColumn}',
+          ),
+        );
+      }
     }
   }
 }
