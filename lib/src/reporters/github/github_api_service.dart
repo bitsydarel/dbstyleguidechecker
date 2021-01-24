@@ -58,14 +58,15 @@ class GithubApiService {
   final Map<String, String> headers;
 
   /// Create a new [GithubApiService].
-  GithubApiService(this.repoOwner,
-      this.repoName,
-      this.apiToken, [
-        this.baseUrl = 'https://api.github.com',
-      ]) : headers = <String, String>{
-    'Accept': 'application/vnd.github.v3+json',
-    'Authorization': 'token $apiToken'
-  };
+  GithubApiService(
+    this.repoOwner,
+    this.repoName,
+    this.apiToken, [
+    this.baseUrl = 'https://api.github.com',
+  ]) : headers = <String, String>{
+          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': 'token $apiToken'
+        };
 
   /// Verify if pull request is open.
   Future<bool> isPullRequestOpen(final String pullRequestId) async {
@@ -93,10 +94,12 @@ class GithubApiService {
   }
 
   /// Add a review comment to the github pull request.
-  Future<void> addReviewComment(final String pullRequestId,
-      final CodeStyleViolation violation,
-      final GithubFileDiff fileDiff,
-      final String commitId,) async {
+  Future<void> addReviewComment(
+    final String pullRequestId,
+    final CodeStyleViolation violation,
+    final GithubFileDiff fileDiff,
+    final String commitId,
+  ) async {
     final int violationLineInDiff = await findViolationLineInFileDiff(
       fileDiff?.patch,
       violation.line,
@@ -125,8 +128,10 @@ class GithubApiService {
   }
 
   /// Require code changes.
-  Future<void> requestChanges(final String commitId,
-      final String pullRequestId,) async {
+  Future<void> requestChanges(
+    final String commitId,
+    final String pullRequestId,
+  ) async {
     final Map<String, dynamic> reviewStatus = <String, dynamic>{
       'commit_id': commitId,
       'event': 'REQUEST_CHANGES',
@@ -149,12 +154,14 @@ class GithubApiService {
   }
 
   /// Notify github that the pull request meet the project code style.
-  Future<void> onCodeStyleViolationNotFound(final String commitId,
-      final String pullRequestId,) async {
+  Future<void> onCodeStyleViolationNotFound(
+    final String commitId,
+    final String pullRequestId,
+  ) async {
     final Map<String, dynamic> reviewStatus = <String, dynamic>{
       'commit_id': commitId,
       'body':
-      'This is close to perfect! Waiting for someone to review and merge',
+          'This is close to perfect! Waiting for someone to review and merge',
     };
 
     final http.Response response = await http.post(
@@ -172,7 +179,9 @@ class GithubApiService {
   }
 
   /// Get the files included in a pull request.
-  Future<List<GithubFileDiff>> getPullRequestFiles(final String pullRequestId,) async {
+  Future<List<GithubFileDiff>> getPullRequestFiles(
+    final String pullRequestId,
+  ) async {
     final http.Response response = await http.get(
       '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId/files',
       headers: headers,
@@ -244,7 +253,11 @@ class GithubApiService {
   @visibleForTesting
   String formatViolationMessage(CodeStyleViolation violation) {
     final StringBuffer template = StringBuffer()
-      ..writeln(violation.ruleDescription)..writeln('**SEVERITY**: ${violation.severity.id}')..writeln('**RULE**: ${violation.rule}')..writeln('**FILE**: ${violation.file}')..writeln('**LINE**: ${violation.line}');
+      ..writeln(violation.ruleDescription)
+      ..writeln('**SEVERITY**: ${violation.severity.id}')
+      ..writeln('**RULE**: ${violation.rule}')
+      ..writeln('**FILE**: ${violation.file}')
+      ..writeln('**LINE**: ${violation.line}');
 
     return template.toString();
   }

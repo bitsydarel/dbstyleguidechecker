@@ -40,3 +40,9 @@
 - Added new reporter for json
 
 - Cleanup code and documentation
+
+## 2.0.5
+
+- Updated console reporter to report to stderr if violation severity is greater than info.
+
+- Minor code improvements.

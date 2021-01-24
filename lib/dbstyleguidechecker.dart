@@ -74,10 +74,12 @@ abstract class CodeStyleViolationsChecker {
   /// [parser] to parse founded style guide violations.
   ///
   /// [reporter] to report founded style guide violations.
-  const CodeStyleViolationsChecker(this.styleGuide,
-      this.projectDir,
-      this.parser,
-      this.reporter,);
+  const CodeStyleViolationsChecker(
+    this.styleGuide,
+    this.projectDir,
+    this.parser,
+    this.reporter,
+  );
 
   /// Run the checker.
   Future<void> check() async {
@@ -117,6 +119,8 @@ abstract class CodeStyleViolationsParser {
   /// Parse violations contained in the [violations].
   ///
   /// [projectDir] the violations are coming from.
-  Future<List<CodeStyleViolation>> parse(final String violations,
-      final String projectDir,);
+  Future<List<CodeStyleViolation>> parse(
+    final String violations,
+    final String projectDir,
+  );
 }

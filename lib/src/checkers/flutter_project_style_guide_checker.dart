@@ -55,6 +55,7 @@ class FlutterProjectStyleGuideChecker extends DartProjectStyleGuideChecker {
       'flutter',
       <String>['packages', 'get'],
       runInShell: true,
+      stderrEncoding: utf8,
       stdoutEncoding: utf8,
     ).then<void>((ProcessResult result) {
       final String errorOutput = result.stderr.toString();
