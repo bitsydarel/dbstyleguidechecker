@@ -31,9 +31,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import 'package:meta/meta.dart' show visibleForTesting, immutable, required;
-
-// ignore_for_file: avoid_as
+import 'package:meta/meta.dart' show visibleForTesting, immutable;
 
 /// Dart lint violation class representation.
 @immutable
@@ -61,32 +59,61 @@ class CodeStyleViolation {
 
   /// Create a new [CodeStyleViolation].
   const CodeStyleViolation({
-    @required this.severity,
-    @required this.type,
-    @required this.file,
-    @required this.line,
-    @required this.lineColumn,
-    @required this.rule,
-    @required this.ruleDescription,
-  })  : assert(severity != null, "severity can't be null"),
-        assert(type != null, "type can't be null"),
-        assert(file != null, "file can't be null"),
-        assert(line != null, "line can't be null"),
-        assert(lineColumn != null, "lineColumn can't be null"),
-        assert(rule != null, "rule can't be null"),
-        assert(ruleDescription != null, "ruleDescription can't be null");
+    required this.severity,
+    required this.type,
+    required this.file,
+    required this.line,
+    required this.lineColumn,
+    required this.rule,
+    required this.ruleDescription,
+  });
 
   ///
-  CodeStyleViolation.fromJson(final Map<String, Object> json)
-      : type = json['type'] as String,
-        file = json['file'] as String,
-        line = json['line'] as int,
-        lineColumn = json['lineColumn'] as int,
-        rule = json['rule'] as String,
-        ruleDescription = json['ruleDescription'] as String,
-        severity = ViolationSeverity.fromMap(
-          json['severity'] as Map<String, Object>,
-        );
+  factory CodeStyleViolation.fromJson(final Map<String, Object> json) {
+    final Object? type = json['type'];
+    final Object? file = json['file'];
+    final Object? line = json['line'];
+    final Object? lineColumn = json['lineColumn'];
+    final Object? rule = json['rule'];
+    final Object? ruleDescription = json['ruleDescription'];
+    final Object? severity = json['severity'];
+
+    return CodeStyleViolation(
+      type: type is String
+          ? type
+          : throw ArgumentError.value(type, 'type', 'invalid violation type'),
+      file: file is String
+          ? file
+          : throw ArgumentError.value(type, 'file', 'invalid file path'),
+      line: line is int
+          ? line
+          : throw ArgumentError.value(line, 'line', 'invalid line number'),
+      lineColumn: lineColumn is int
+          ? lineColumn
+          : throw ArgumentError.value(
+              lineColumn,
+              'lineColumn',
+              'invalid line column',
+            ),
+      rule: rule is String
+          ? rule
+          : throw ArgumentError.value(rule, 'rule', 'invalid rule name'),
+      ruleDescription: ruleDescription is String
+          ? ruleDescription
+          : throw ArgumentError.value(
+              ruleDescription,
+              'ruleDescription',
+              'invalid rule description',
+            ),
+      severity: severity is Map<String, Object>
+          ? ViolationSeverity.fromMap(severity)
+          : throw ArgumentError.value(
+              severity,
+              'severity',
+              'is not a map of string to object',
+            ),
+    );
+  }
 
   ///
   Map<String, Object> toJson() {
@@ -119,15 +146,15 @@ class CodeStyleViolation {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is CodeStyleViolation &&
-              runtimeType == other.runtimeType &&
-              severity == other.severity &&
-              type == other.type &&
-              rule == other.rule &&
-              ruleDescription == other.ruleDescription &&
-              file == other.file &&
-              line == other.line &&
-              lineColumn == other.lineColumn;
+      other is CodeStyleViolation &&
+          runtimeType == other.runtimeType &&
+          severity == other.severity &&
+          type == other.type &&
+          rule == other.rule &&
+          ruleDescription == other.ruleDescription &&
+          file == other.file &&
+          line == other.line &&
+          lineColumn == other.lineColumn;
 
   @override
   int get hashCode =>
@@ -172,9 +199,17 @@ class ViolationSeverity {
   final String id;
 
   /// Create [ViolationSeverity] from the parameter [json].
-  ViolationSeverity.fromMap(final Map<String, Object> json)
-      : level = json['level'] as int,
-        id = json['id'] as String;
+  factory ViolationSeverity.fromMap(final Map<String, Object?> json) {
+    final Object? level = json['level'];
+    final Object? id = json['id'];
+
+    return ViolationSeverity.private(
+      level is int
+          ? level
+          : throw ArgumentError.value(level, 'level', 'invalid level'),
+      id is String ? id : throw ArgumentError.value(id, 'id', 'invalid id'),
+    );
+  }
 
   /// Transform [ViolationSeverity] to a [Map].
   Map<String, Object> toJson() {
@@ -183,18 +218,20 @@ class ViolationSeverity {
 
   /// Create [ViolationSeverity] with [level] and [id].
   @visibleForTesting
-  const ViolationSeverity.private(this.level, this.id)
-      : assert(level != null, "severity can't be null"),
-        assert(id != null, "id can't be null");
+  const ViolationSeverity.private(this.level, this.id);
 
   /// Create [ViolationSeverity] from the specified [id].
   ///
   /// Notes: the id need to be one of the items in [supportedSeverities].
   factory ViolationSeverity.withId(final String id) {
-    final ViolationSeverity lintSeverity = supportedSeverities.firstWhere(
-          (ViolationSeverity element) => element.id == id,
-      orElse: () => null,
-    );
+    ViolationSeverity? lintSeverity;
+
+    for (final ViolationSeverity severity in supportedSeverities) {
+      if (severity.id == id) {
+        lintSeverity = severity;
+        break;
+      }
+    }
 
     if (lintSeverity == null) {
       throw ArgumentError.value(
@@ -210,10 +247,10 @@ class ViolationSeverity {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is ViolationSeverity &&
-              runtimeType == other.runtimeType &&
-              level == other.level &&
-              id == other.id;
+      other is ViolationSeverity &&
+          runtimeType == other.runtimeType &&
+          level == other.level &&
+          id == other.id;
 
   @override
   int get hashCode => level.hashCode ^ id.hashCode;
@@ -223,5 +260,5 @@ class ViolationSeverity {
 
   /// Contains the list of supported lint rules severities.
   static final List<ViolationSeverity> supportedSeverities =
-  <ViolationSeverity>[info, warning, error, invalid];
+      <ViolationSeverity>[info, warning, error, invalid];
 }

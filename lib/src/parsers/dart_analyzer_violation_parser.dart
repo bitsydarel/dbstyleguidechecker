@@ -55,8 +55,10 @@ class DartAnalyzerViolationParser extends CodeStyleViolationsParser {
   );
 
   @override
-  Future<List<CodeStyleViolation>> parse(String violations,
-      String projectDir,) async {
+  Future<List<CodeStyleViolation>> parse(
+    String violations,
+    String projectDir,
+  ) async {
     final List<CodeStyleViolation> parsedViolations = <CodeStyleViolation>[];
 
     for (final String violation in LineSplitter.split(violations)) {
@@ -74,8 +76,9 @@ class DartAnalyzerViolationParser extends CodeStyleViolationsParser {
   ///
   /// [projectDir] containing this file.
   @visibleForTesting
-  CodeStyleViolation parseStyleGuideViolation(final String violation, [
-    String projectDir,
+  CodeStyleViolation parseStyleGuideViolation(
+    final String violation, [
+    String? projectDir,
   ]) {
     if (violation.isEmpty) {
       throw const UnrecoverableException(
@@ -104,19 +107,20 @@ class DartAnalyzerViolationParser extends CodeStyleViolationsParser {
     } else {
       final RegExpMatch result = matches.single;
 
-      final ViolationSeverity severity = ViolationSeverity.withId(result[1]);
-      final String type = result[2];
-      final String rule = result[3];
+      // starting from one because it's the
+      final ViolationSeverity severity = ViolationSeverity.withId(result[1]!);
+      final String type = result[2]!;
+      final String rule = result[3]!;
 
-      String filePath = result[4];
+      String filePath = result[4]!;
 
       if (projectDir != null) {
         filePath = getFileRelativePath(filePath, projectDir);
       }
 
-      final int lineNumber = int.parse(result[5]);
-      final int lineColumn = int.parse(result[6]);
-      final String lintRuleDescription = result[8];
+      final int lineNumber = int.parse(result[5]!);
+      final int lineColumn = int.parse(result[6]!);
+      final String lintRuleDescription = result[8]!;
 
       return CodeStyleViolation(
         severity: severity,

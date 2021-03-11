@@ -70,9 +70,8 @@ Future<void> main(List<String> arguments) async {
   CodeStyleViolationsChecker checker;
 
   try {
-    final CodeStyleViolationsReporter reporter = _createReporter(
-      scriptArgument,
-    );
+    final CodeStyleViolationsReporter reporter =
+        _createReporter(scriptArgument);
 
     checker = _createChecker(scriptArgument, reporter);
   } on UnrecoverableException catch (exception) {
@@ -81,14 +80,18 @@ Future<void> main(List<String> arguments) async {
     return;
   }
 
-  runZoned<void>(checker.check, onError: (Object error, StackTrace stackTrace) {
-    printHelpMessage(error.toString());
-    if (error is UnrecoverableException) {
-      exitCode = error.exitCode;
-    } else {
-      exitCode = exitUnexpectedError;
-    }
-  });
+  await runZonedGuarded<Future<void>>(
+    checker.check,
+    (Object error, StackTrace stackTrace) {
+      printHelpMessage(error.toString());
+
+      if (error is UnrecoverableException) {
+        exitCode = error.exitCode;
+      } else {
+        exitCode = exitUnexpectedError;
+      }
+    },
+  );
 }
 
 CodeStyleViolationsChecker _createChecker(
@@ -103,7 +106,6 @@ CodeStyleViolationsChecker _createChecker(
         const DartAnalyzerViolationParser(),
         reporter,
       );
-      break;
     case flutterProjectType:
       return FlutterProjectStyleGuideChecker(
         scriptArgument.codeStyle,
@@ -111,7 +113,6 @@ CodeStyleViolationsChecker _createChecker(
         const DartAnalyzerViolationParser(),
         reporter,
       );
-      break;
     default:
       throw UnrecoverableException(
         'Invalid project type specified, '
@@ -128,7 +129,7 @@ CodeStyleViolationsReporter _createReporter(
     case reporterOfTypeConsole:
       return const ConsoleCodeStyleViolationsReporter();
     case reporterOfTypeFile:
-      final File reporterOutputFile = scriptArgument.reporterOutputFile;
+      final File? reporterOutputFile = scriptArgument.reporterOutputFile;
 
       if (reporterOutputFile == null) {
         throw const UnrecoverableException(
@@ -139,7 +140,7 @@ CodeStyleViolationsReporter _createReporter(
       }
       return FileCodeStyleViolationsReporter(reporterOutputFile);
     case reporterOfTypeGithub:
-      final VcsArgument vcs = scriptArgument.vcs;
+      final VcsArgument? vcs = scriptArgument.vcs;
 
       if (vcs == null) {
         throw const UnrecoverableException(

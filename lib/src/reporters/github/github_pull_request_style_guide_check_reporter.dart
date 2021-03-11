@@ -66,20 +66,16 @@ class GithubPullRequestStyleGuideCheckReporter
   Future<void> report(List<CodeStyleViolation> violations) async {
     if (await _service.isPullRequestOpen(pullRequestId)) {
       // Get the last commit id, so we can fetch the latest state of the code.
-      final String latestCommitId = await _service.getLatestCommitId(
-        pullRequestId,
-      );
+      final String? latestCommitId =
+          await _service.getLatestCommitId(pullRequestId);
 
-      final List<GithubFileDiff> diffFiles = await _service.getPullRequestFiles(
-        pullRequestId,
-      );
+      final List<GithubFileDiff> diffFiles =
+          await _service.getPullRequestFiles(pullRequestId);
 
       for (final CodeStyleViolation violation in violations) {
         // Find the file where the violation happened.
-        final GithubFileDiff fileDiff = await _firstMatching(
-          violation,
-          diffFiles,
-        );
+        final GithubFileDiff? fileDiff =
+            await _firstMatching(violation, diffFiles);
 
         if (fileDiff == null) {
           continue;
@@ -95,10 +91,11 @@ class GithubPullRequestStyleGuideCheckReporter
       }
 
       final bool pullRequestNeedFixes = violations.any(
-            (CodeStyleViolation violation) => violation.severity.level > 0,
+        (CodeStyleViolation violation) => violation.severity.level > 0,
       );
 
-      if (pullRequestNeedFixes) {
+      if (latestCommitId == null) {
+      } else if (pullRequestNeedFixes) {
         await _service.requestChanges(latestCommitId, pullRequestId);
       } else {
         await _service.onCodeStyleViolationNotFound(
@@ -114,8 +111,10 @@ class GithubPullRequestStyleGuideCheckReporter
     }
   }
 
-  Future<GithubFileDiff> _firstMatching(final CodeStyleViolation violation,
-      final List<GithubFileDiff> fileDiffs,) async {
+  Future<GithubFileDiff?> _firstMatching(
+    final CodeStyleViolation violation,
+    final List<GithubFileDiff> fileDiffs,
+  ) async {
     for (final GithubFileDiff fileDiff in fileDiffs) {
       if (await isSameFilePath(fileDiff.filename, violation.file)) {
         return fileDiff;
