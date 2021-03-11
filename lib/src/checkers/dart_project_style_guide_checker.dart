@@ -57,6 +57,7 @@ class DartProjectStyleGuideChecker extends CodeStyleViolationsChecker {
           'analyze',
           '--format',
           'machine',
+          // TODO(bitsydarel): uncomment when, https://github.com/dart-lang/sdk/issues/45286
           // '--options',
           // styleGuide.path,
           projectDir.path,
