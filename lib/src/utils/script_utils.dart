@@ -39,7 +39,6 @@ import 'package:dbstyleguidechecker/dbstyleguidechecker.dart';
 import 'package:dbstyleguidechecker/src/exceptions.dart';
 import 'package:dbstyleguidechecker/src/utils/file_utils.dart';
 import 'package:io/ansi.dart';
-import 'package:meta/meta.dart';
 
 const String _codeStyleParameter = 'code-style';
 const String _projectTypeParameter = 'project-type';
@@ -101,7 +100,8 @@ final ArgParser argumentParser = ArgParser()
     _codeStyleParameter,
     defaultsTo: 'analysis_options.yaml',
     help: 'Specify the code style guide to use',
-  )..addOption(
+  )
+  ..addOption(
     _projectTypeParameter,
     defaultsTo: dartProjectType,
     allowed: supportedProjectType,
@@ -110,7 +110,8 @@ final ArgParser argumentParser = ArgParser()
       flutterProjectType: 'Report code style violation for flutter project',
     },
     help: 'Specify the type of project to analyze',
-  )..addOption(
+  )
+  ..addOption(
     _reporterTypeParameter,
     defaultsTo: reporterOfTypeConsole,
     allowed: _supportedReporterType,
@@ -121,16 +122,20 @@ final ArgParser argumentParser = ArgParser()
       reporterOfTypeJson: 'Report code style violation to the console as json'
     },
     help: 'Specify how to report code style violations',
-  )..addOption(
+  )
+  ..addOption(
     _reporterOutputFileParameter,
     help: 'Specify the file where the file code violation reporter will output',
-  )..addOption(
+  )
+  ..addOption(
     _vcsUrlParameter,
     help: 'VCS repository to push code style violation report',
-  )..addOption(
+  )
+  ..addOption(
     _vcsPullRequestIdParameter,
     help: 'VCS repository pull request id',
-  )..addOption(
+  )
+  ..addOption(
     _vcsAccessTokenParameter,
     help: 'VCS repository access token',
   )
@@ -140,13 +145,13 @@ final ArgParser argumentParser = ArgParser()
   );
 
 /// Print help message to the console.
-void printHelpMessage([final String message]) {
+void printHelpMessage([final String? message]) {
   if (message != null) {
     stderr.writeln(red.wrap('$message\n'));
   }
 
   final String options =
-  LineSplitter.split(argumentParser.usage).map((String l) => l).join('\n');
+      LineSplitter.split(argumentParser.usage).map((String l) => l).join('\n');
 
   stdout.writeln(
     'Usage: dbstyleguidechecker --style-guide '
@@ -172,15 +177,10 @@ class VcsArgument {
 
   ///
   const VcsArgument({
-    @required this.repoUrl,
-    @required this.pullRequestId,
-    @required this.accessToken,
-  })  : assert(repoUrl != null, 'Repository url should be specified'),
-        assert(pullRequestId != null, 'Pull request id should be specified'),
-        assert(
-        accessToken != null,
-        'Repository Access Token should be specified',
-        );
+    required this.repoUrl,
+    required this.pullRequestId,
+    required this.accessToken,
+  });
 
   /// Create a [VcsArgument] from the provided [argResults].
   factory VcsArgument.from(final ArgResults argResults) {
@@ -251,27 +251,25 @@ class ScriptArgument {
   /// Type of reporter to use.
   ///
   /// The value match one of the child of [CodeStyleViolationsReporter].
-  final String reporterType;
+  final String? reporterType;
 
   /// Output file where the [CodeStyleViolationsReporter]
   /// should report founded code style violations if supported by the reporter.
-  final File reporterOutputFile;
+  final File? reporterOutputFile;
 
   /// VCS configuration to be use by the [CodeStyleViolationsReporter]
   /// to report code violations issues.
-  final VcsArgument vcs;
+  final VcsArgument? vcs;
 
   ///
   const ScriptArgument({
-    @required this.projectType,
-    @required this.projectDir,
-    @required this.codeStyle,
+    required this.projectType,
+    required this.projectDir,
+    required this.codeStyle,
     this.reporterType,
     this.reporterOutputFile,
     this.vcs,
-  })  : assert(projectDir != null, 'Project Dir should be specified'),
-        assert(codeStyle != null, 'Code style should be specified'),
-        assert(projectType != null, 'Project Type should be specified');
+  });
 
   /// Create a [ScriptArgument] from the provided [argResults].
   factory ScriptArgument.from(final ArgResults argResults) {
@@ -283,12 +281,10 @@ class ScriptArgument {
 
     final String reporterType = _parseReporterType(argResults);
 
-    final File reporterOutputFile = _parseReporterOutputFile(
-      argResults,
-      projectDir,
-    );
+    final File? reporterOutputFile =
+        _parseReporterOutputFile(argResults, projectDir);
 
-    final VcsArgument vcs = _parseVcsParameter(argResults);
+    final VcsArgument? vcs = _parseVcsParameter(argResults);
 
     return ScriptArgument(
       projectType: projectType,
@@ -317,7 +313,7 @@ class ScriptArgument {
     } else {
       throw UnrecoverableException(
         '$_projectTypeParameter parameter is required, '
-            "supported values are ${supportedProjectType.join(", ")}",
+        "supported values are ${supportedProjectType.join(", ")}",
         exitMissingRequiredArgument,
       );
     }
@@ -343,17 +339,16 @@ class ScriptArgument {
     return projectDir;
   }
 
-  static File _parseCodeStyleParameter(final Directory projectDir,
-      final ArgResults argResults,) {
-    File codeStyleFile;
+  static File _parseCodeStyleParameter(
+    final Directory projectDir,
+    final ArgResults argResults,
+  ) {
+    File? codeStyleFile;
 
-    final dynamic codeStyleFilePath = argResults[_codeStyleParameter];
+    final Object? codeStyleFilePath = argResults[_codeStyleParameter];
 
     if (codeStyleFilePath is String && codeStyleFilePath.isNotEmpty) {
-      codeStyleFile = getFile(
-        codeStyleFilePath,
-        projectDir.path,
-      );
+      codeStyleFile = getFile(codeStyleFilePath, projectDir.path);
     }
 
     if (codeStyleFile == null || !codeStyleFile.existsSync()) {
@@ -367,7 +362,7 @@ class ScriptArgument {
   }
 
   static String _parseReporterType(final ArgResults argResults) {
-    final dynamic reporterType = argResults[_reporterTypeParameter];
+    final Object? reporterType = argResults[_reporterTypeParameter];
 
     if (reporterType is String &&
         reporterType.isNotEmpty &&
@@ -381,10 +376,13 @@ class ScriptArgument {
     }
   }
 
-  static File _parseReporterOutputFile(final ArgResults argResults,
-      final Directory projectDir,) {
-    File outputFile;
-    final dynamic outputFilePath = argResults[_reporterOutputFileParameter];
+  static File? _parseReporterOutputFile(
+    final ArgResults argResults,
+    final Directory projectDir,
+  ) {
+    File? outputFile;
+
+    final Object? outputFilePath = argResults[_reporterOutputFileParameter];
 
     if (outputFilePath == null) {
       return null;
@@ -404,16 +402,14 @@ class ScriptArgument {
     return outputFile;
   }
 
-  static VcsArgument _parseVcsParameter(final ArgResults argResults) {
+  static VcsArgument? _parseVcsParameter(final ArgResults argResults) {
     final bool urlProvided = argResults.wasParsed(_vcsUrlParameter);
 
-    final bool pullRequestIdProvided = argResults.wasParsed(
-      _vcsPullRequestIdParameter,
-    );
+    final bool pullRequestIdProvided =
+        argResults.wasParsed(_vcsPullRequestIdParameter);
 
-    final bool accessTokenProvided = argResults.wasParsed(
-      _vcsAccessTokenParameter,
-    );
+    final bool accessTokenProvided =
+        argResults.wasParsed(_vcsAccessTokenParameter);
 
     if (!urlProvided && !pullRequestIdProvided && !accessTokenProvided) {
       return null;

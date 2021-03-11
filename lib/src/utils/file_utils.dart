@@ -44,16 +44,17 @@ final RegExp _diffFinder = RegExp(
 /// Get the relative path of a file from it's parent directory.
 String getFileRelativePath(final String filePath, final String projectDir) {
   assert(
-  path.isWithin(projectDir, filePath),
-  '$filePath is not from the $projectDir project.',
+    path.isWithin(projectDir, filePath),
+    '$filePath is not from the $projectDir project.',
   );
 
   return path.relative(filePath, from: projectDir);
 }
 
 /// Check if the file paths are the or pointing to the same location.
-Future<bool> isSameFilePath(final String filePath1,
-    final String filePath2,
+Future<bool> isSameFilePath(
+  final String filePath1,
+  final String filePath2,
 ) async {
   // If file paths are identical let avoid unnecessary check.
   if (filePath1 == filePath2) {
@@ -83,8 +84,9 @@ Future<bool> isSameFilePath(final String filePath1,
   }
 }
 
-bool _compareSegmentWithSameLength(List<String> paths1,
-    List<String> paths2,
+bool _compareSegmentWithSameLength(
+  List<String> paths1,
+  List<String> paths2,
 ) {
   if (paths1.isEmpty) {
     return true;
@@ -100,8 +102,9 @@ bool _compareSegmentWithSameLength(List<String> paths1,
 }
 
 /// Find the violation [lineNumber] in the file diff [path].
-Future<int> findViolationLineInFileDiff(final String patch,
-    final int lineNumber,
+Future<int> findViolationLineInFileDiff(
+  final String? patch,
+  final int lineNumber,
 ) async {
   if (patch == null || patch.isEmpty) {
     return 0;
@@ -123,7 +126,7 @@ Future<int> findViolationLineInFileDiff(final String patch,
 
       final RegExpMatch result = matches.single;
 
-      currentLine = int.parse(result[1]);
+      currentLine = int.parse(result[1]!);
     } else if (line.startsWith('+') || line.startsWith(' ')) {
       // Added or unmodified
       if (currentLine == lineNumber) {

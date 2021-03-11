@@ -71,7 +71,7 @@ class GithubApiService {
   /// Verify if pull request is open.
   Future<bool> isPullRequestOpen(final String pullRequestId) async {
     final http.Response response = await http.get(
-      '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId',
+      Uri.parse('$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId'),
       headers: headers,
     );
 
@@ -97,16 +97,14 @@ class GithubApiService {
   Future<void> addReviewComment(
     final String pullRequestId,
     final CodeStyleViolation violation,
-    final GithubFileDiff fileDiff,
-    final String commitId,
+    final GithubFileDiff? fileDiff,
+    final String? commitId,
   ) async {
-    final int violationLineInDiff = await findViolationLineInFileDiff(
-      fileDiff?.patch,
-      violation.line,
-    );
+    final int violationLineInDiff =
+        await findViolationLineInFileDiff(fileDiff?.patch, violation.line);
 
     final Map<String, dynamic> reviewComment = <String, dynamic>{
-      'path': fileDiff.filename,
+      'path': fileDiff?.filename,
       'line': violation.line,
       'position': violationLineInDiff,
       'commit_id': commitId,
@@ -114,7 +112,9 @@ class GithubApiService {
     };
 
     final http.Response response = await http.post(
-      '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId/comments',
+      Uri.parse(
+        '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId/comments',
+      ),
       headers: headers,
       body: json.encode(reviewComment),
     );
@@ -129,18 +129,23 @@ class GithubApiService {
 
   /// Require code changes.
   Future<void> requestChanges(
-    final String commitId,
+    final String? commitId,
     final String pullRequestId,
   ) async {
     final Map<String, dynamic> reviewStatus = <String, dynamic>{
-      'commit_id': commitId,
       'event': 'REQUEST_CHANGES',
       'body': 'Your pull request seems to contains some '
           'code style guide violation, please verify them'
     };
 
+    if (commitId != null) {
+      reviewStatus['commit_id'] = commitId;
+    }
+
     final http.Response response = await http.post(
-      '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId/reviews',
+      Uri.parse(
+        '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId/reviews',
+      ),
       headers: headers,
       body: json.encode(reviewStatus),
     );
@@ -155,17 +160,22 @@ class GithubApiService {
 
   /// Notify github that the pull request meet the project code style.
   Future<void> onCodeStyleViolationNotFound(
-    final String commitId,
+    final String? commitId,
     final String pullRequestId,
   ) async {
     final Map<String, dynamic> reviewStatus = <String, dynamic>{
-      'commit_id': commitId,
-      'body':
-          'This is close to perfect! Waiting for someone to review and merge',
+      'body': 'This is close to perfect! '
+          'Waiting for someone to review and merge',
     };
 
+    if (commitId != null) {
+      reviewStatus['commit_id'] = commitId;
+    }
+
     final http.Response response = await http.post(
-      '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId/reviews',
+      Uri.parse(
+        '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId/reviews',
+      ),
       headers: headers,
       body: json.encode(reviewStatus),
     );
@@ -183,7 +193,9 @@ class GithubApiService {
     final String pullRequestId,
   ) async {
     final http.Response response = await http.get(
-      '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId/files',
+      Uri.parse(
+        '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId/files',
+      ),
       headers: headers,
     );
 
@@ -194,10 +206,10 @@ class GithubApiService {
 
       if (jsonResponse is List<dynamic>) {
         jsonResponse.whereType<Map<String, dynamic>>().forEach(
-              (Map<String, dynamic> file) {
-            final Object sha = file['sha'];
-            final Object fileName = file['filename'];
-            final Object patch = file['patch'];
+          (Map<String, dynamic> file) {
+            final Object? sha = file['sha'];
+            final Object? fileName = file['filename'];
+            final Object? patch = file['patch'];
 
             diffFiles.add(
               GithubFileDiff(
@@ -220,9 +232,11 @@ class GithubApiService {
   }
 
   /// Get the latest commit available on the pull request.
-  Future<String> getLatestCommitId(final String pullRequestId) async {
+  Future<String?> getLatestCommitId(final String pullRequestId) async {
     final http.Response response = await http.get(
-      '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId/commits',
+      Uri.parse(
+        '$baseUrl/repos/$repoOwner/$repoName/pulls/$pullRequestId/commits',
+      ),
       headers: headers,
     );
 

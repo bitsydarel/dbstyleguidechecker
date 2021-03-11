@@ -7,4 +7,4 @@ environment:
   sdk: '>=2.4.0 <3.0.0'
 
 dev_dependencies:
-  flutter_code_style: ^1.6.2
+  flutter_code_style: ^2.0.2

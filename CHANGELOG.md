@@ -46,3 +46,7 @@
 - Updated console reporter to report to stderr if violation severity is greater than info.
 
 - Minor code improvements.
+
+## 3.0.0-nullsafety.0
+
+- Updated the tool to null safety 

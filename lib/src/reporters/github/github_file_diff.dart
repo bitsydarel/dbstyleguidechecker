@@ -46,16 +46,16 @@ class GithubFileDiff {
   final String filename;
 
   /// patch of the file.
-  final String patch;
+  final String? patch;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is GithubFileDiff &&
-              runtimeType == other.runtimeType &&
-              sha == other.sha &&
-              filename == other.filename &&
-              patch == other.patch;
+      other is GithubFileDiff &&
+          runtimeType == other.runtimeType &&
+          sha == other.sha &&
+          filename == other.filename &&
+          patch == other.patch;
 
   @override
   int get hashCode => sha.hashCode ^ filename.hashCode ^ patch.hashCode;

@@ -52,12 +52,14 @@ class DartProjectStyleGuideChecker extends CodeStyleViolationsChecker {
   Future<String> getCodeStyleViolations() {
     return runPubGet().then(
       (_) => Process.run(
-        'dartanalyzer',
+        'dart',
         <String>[
+          'analyze',
           '--format',
           'machine',
-          '--options',
-          styleGuide.path,
+          // TODO(bitsydarel): uncomment when, https://github.com/dart-lang/sdk/issues/45286
+          // '--options',
+          // styleGuide.path,
           projectDir.path,
         ],
         runInShell: true,
@@ -89,7 +91,6 @@ class DartProjectStyleGuideChecker extends CodeStyleViolationsChecker {
           exitPackageUpdatedFailed,
         );
       }
-      return;
     });
   }
 }
